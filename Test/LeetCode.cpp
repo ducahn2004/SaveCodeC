@@ -52,14 +52,26 @@ public:
             head = head->next;
         }
     }
-    
-    void eraseEle(ListNode* head, int val){
-    }
-    ListNode* removeElements(ListNode* head, int val) {
-        ListNode *temp = head;
-        //if val in 0 of llist
 
+    
+    ListNode* removeElements(ListNode* head, int val) {
         
+        //if val in 0 of llist
+        while(head->val != val && head != NULL){
+            head = head->next;
+        }
+        ListNode *temp = head->next;
+        ListNode *temp_behind = head;
+        while(temp != NULL){
+            if(temp->val == val){
+                temp_behind->next = temp->next; 
+                temp = temp->next;
+            }
+            else{
+                temp_behind = temp_behind->next;
+                temp = temp->next;
+            }
+        }
         return head;
     }
 };
@@ -73,13 +85,26 @@ int main(){
 	// }
     Solution so;
     ListNode *head = NULL;
-    so.pushBack(head,1);
-    so.pushBack(head,2);
-    so.pushBack(head,6);
-    so.pushBack(head,3);
-    so.pushBack(head,4);
-    so.pushBack(head,5);
-    so.pushBack(head,6);
+    //test case 1
+    // so.pushBack(head,1);
+    // so.pushBack(head,2);
+    // so.pushBack(head,6);
+    // so.pushBack(head,6);
+    // so.pushBack(head,6);
+    // so.pushBack(head,3);
+    // so.pushBack(head,4);
+    // so.pushBack(head,5);
+    // so.pushBack(head,6);
+
+    //test case 2
+    so.pushBack(head,7);
+    so.pushBack(head,7);
+    so.pushBack(head,7);
+    so.pushBack(head,7);
+    so.pushBack(head,7);
     so.print(head);
+    cout << endl;   
+    ListNode* result = so.removeElements(head,7);
+    so.print(result);
     
 }
