@@ -5,50 +5,81 @@
 
 using namespace std;
 
-class Solution {
-public:
-    void addZero(string &a, string &b){
-        if(a.size() > b.size()){
-            while(a.size() > b.size()){
-                b = "0" + b;
-            }
-        }
-        else{
-            while(a.size() < b.size()){
-                a = "0" + a;
-            }
-        }
-    } 
+class Error{
+private:
+    string message;
 
-    char formula(char a, char b, char &count){
-        char result;
-        if(a == '0' && b == '0'){
-            result = '0';
-            count = '0';
+public:
+    Error(string message){this->message= message;}
+    Error(string expected, string got){this->message = "Expected: " + expected + " but got " + got;}
+    Error(int expected, int got): Error(to_string(expected), to_string(got)){
+
+    }
+    string getMessage(){return message;}
+};
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+class Solution {
+
+public:
+    ListNode* makeNode(int x){
+        ListNode* newNode = new ListNode;
+        *newNode = ListNode(x);
+        return newNode;
+    }
+    void pushBack(ListNode *&l1,int x){
+        ListNode *temp = l1;
+        ListNode *newNode = makeNode(x);
+        //ListNode newNode(x);
+        if(l1  == nullptr){
+            l1 = newNode;
+            return;
         }
-        else if((a == '0' && b == '1') || (a == '1' && b == '0')){
-            result = '1';
-            count = '0';
+        while(temp->next != nullptr){
+            temp = temp->next;
         }
-        else{
-            result = '0';
-            count = '1';
-        }
-        return result;
+        (temp->next) = newNode;
     }
 
-    string addBinary(string a, string b) {
-        string result = "";
+    void print(ListNode *head){
+        while(head != NULL){
+            cout << head->val << " ";
+            head = head->next;
+        }
+    }
+    
+    void eraseEle(ListNode* head, int val){
+    }
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode *temp = head;
+        //if val in 0 of llist
+
         
-        return result;
+        return head;
     }
 };
 int main(){
-    Solution so;
-    string a = "11";
-    string b = "1";
-    so.addZero(a,b);
-    //cout << a << " " << b;
-    cout << so.addBinary(a,b);
+    // try{
+    
 
+    
+    // }catch(Error& e) {
+	// 	cout << e.getMessage() << endl;
+	// }
+    Solution so;
+    ListNode *head = NULL;
+    so.pushBack(head,1);
+    so.pushBack(head,2);
+    so.pushBack(head,6);
+    so.pushBack(head,3);
+    so.pushBack(head,4);
+    so.pushBack(head,5);
+    so.pushBack(head,6);
+    so.print(head);
+    
 }
