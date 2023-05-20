@@ -55,30 +55,27 @@ public:
     int getMiddle() const {return scores[1];}
     int getFinal() const {return scores[2];}
 
-    //member functio
+    //member function
     double getAverage(){
-        double sum = 0;
-        sum = 1.0*scores[0] + 1.0*scores[1]*3 + 1.0*scores[2]*6;
-        return sum/10;
+        return 0.1*scores[0] + scores[1]*0.3 + scores[2]*0.6;
     }
     bool operator< (Student right){
         if(getAverage() < right.getAverage()) return true;
         else if(getAverage() > right.getAverage()) return false;
         else{
-            return (id < right.id)? true:false;
+            return id < right.id;
         }
     }
 
     void printInfor(){
         cout << "Name: " << name << " " << "Id: " << id << " " << scores[0] << ":" << scores[1] << ":" <<scores[2] << " Average: " << getAverage() << endl;
-
     }
 };
 
 class UClass{
 
 private:
-    string nameSubject;
+    string nameSubject; 
     string IdSubject;
     vector<Student>students;
 
@@ -105,7 +102,8 @@ public:
     }
     
     void removeStudent(int id){
-        for(int i = 0; i < students.size(); i++){
+        int sizeStudents = students.size();
+        for(int i = 0; i < sizeStudents; i++){
             if(students[i].getId() == id){
                 students.erase(students.begin() + i);
                 break;
@@ -116,7 +114,8 @@ public:
     Student getHighestScoreStudent(){
         int index = 0;
         double maxAverage = students[0].getAverage();
-        for(int i = 1 ; i < students.size(); i++){
+        int sizeStudents = students.size();
+        for(int i = 1 ; i < sizeStudents; i++){
             if(students[i].getAverage() > maxAverage) index = i; 
         }
         return students[index];
@@ -127,7 +126,14 @@ public:
             it.printInfor();
         }
     }
-
+    double getAverage(){
+        double sum = 0;
+        int sizeStudents = students.size();
+        for(auto it : students){
+            sum += it.getAverage();
+        }
+        return sum/sizeStudents;
+    }
     void sortAsc(){
         sort(students.begin(),students.end(),[](Student &left, Student &right){return right < left;});
     }
