@@ -1,0 +1,1 @@
+{"name":"Local: Test","url":"c:\\Users\\Administrator\\Code\\SaveCodeC\\Test\\Test.cpp","tests":[{"id":1683553194226,"input":"2\nabba\nabcd","output":"4\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\Administrator\\Code\\SaveCodeC\\Test\\Test.cpp","group":"local","local":true}

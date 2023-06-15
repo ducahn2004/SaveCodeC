@@ -1,6 +1,9 @@
 #include <iostream>
 
-int main(){
-    std::cout << "Hello Word!";
-    return 0;
+
+int main() {
+    int n = 5;
+    while(n--){
+        std::cout << "oke" << std::endl;
+    }
 }
