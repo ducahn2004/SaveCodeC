@@ -11,6 +11,7 @@ int main(){
     vector<int>::iterator it;
     // creat 2D array 
     int row,column;
+    
     vector<vector<int>>arr (row, vector<int>(column));
     // create vt2 with element from vt\
 
