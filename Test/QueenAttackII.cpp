@@ -33,7 +33,7 @@ int main(){
 	}
 	cout << queensAttack(n,k,r_q,c_q,obstacles);
 
-	code check 
+	// code check 
 	cout << "West to East" << endl;
 	vector<vector<int>>result = create_West_To_East(n,r_q,c_q);
 	for(int i = 0; i < result.size(); i++){

@@ -36,7 +36,58 @@ public:
             head = head->next;
         }
     }
-    // ListNode* removeElements(ListNode* head, int val) {
+    bool hasCycle(ListNode *head) {
+	
+		// making two pointers fast and slow and assignning them to head
+        ListNode *fast = head;
+        ListNode *slow = head;
         
-    // }
+		// till fast and fast-> next not reaches NULL
+		// we will increment fast by 2 step and slow by 1 step
+        while(fast != NULL && fast ->next != NULL)
+        {
+            fast = fast->next->next;
+            slow = slow->next;
+            
+			
+			// At the point if fast and slow are at same address
+			// this means linked list has a cycle in it.
+            if(fast == slow)
+                return true;
+        }
+        
+		// if traversal reaches to NULL this means no cycle.
+        return false;
+    }
+    ListNode* detectCycle(ListNode* head) {
+        // Initialize two pointers, slow and fast, to the head of the linked list.
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        // Move the slow pointer one step and the fast pointer two steps at a time through the linked list,
+        // until they either meet or the fast pointer reaches the end of the list.
+        while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) {
+            // If the pointers meet, there is a cycle in the linked list.
+            // Reset the slow pointer to the head of the linked list, and move both pointers one step at a time
+            // until they meet again. The node where they meet is the starting point of the cycle.
+            slow = head;
+            while (slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+            }
+            return slow;
+        }
+        }
+
+        // If the fast pointer reaches the end of the list without meeting the slow pointer,
+        // there is no cycle in the linked list. Return nullptr.
+        return nullptr;
+    }
+
+        // ListNode* removeElements(ListNode* head, int val) {
+            
+        // }
 };
