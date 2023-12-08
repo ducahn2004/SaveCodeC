@@ -1,45 +1,104 @@
 #include <bits/stdc++.h>
 
+#define FOR(i, L, R) for (int i = L; i <= R; i++)
+#define FORD(i, R, L) for (int i = R; i >= L; i--)
+
 using namespace std;
 
-queue<vector<int>> addToQueue(vector<vector<int>> petrolpumps,int i){
-    queue<vector<int>> store;
-    for(int j = i; j < petrolpumps.size(); j++){
-        store.push(petrolpumps[j]);
+const int MOD = 1e9;
+typedef long long ll;
+
+struct BigNumber {
+    int a[50000];
+
+    void init(int x) {
+        memset(a, 0, sizeof(a));
+        a[0] = 1;
+        a[1] = x;
     }
-    for(int j = 0; j < i; j++){
-        store.push(petrolpumps[i]);
+
+    void write() {
+        printf("%d", a[a[0]]);
+        FORD(i, a[0] - 1, 1) {
+            for (int j = int(1e8); j > 1 && j > a[i]; j /= 10)
+                printf("0");
+            printf("%d", a[i]);
+        }
     }
-    return store;
+};
+
+BigNumber add(BigNumber x, BigNumber y) {
+    x.a[0] = max(y.a[0], x.a[0]);
+    FOR(i, 1, x.a[0]) {
+        int sum = x.a[i] + y.a[i];
+        x.a[i] = sum % MOD;
+        x.a[i + 1] += sum / MOD;
+    }
+    x.a[0] += (x.a[x.a[0] + 1] > 0);
+    return x;
 }
 
-int truckTour(vector<vector<int>> petrolpumps) {
-    int i = 0;
-    bool result_check = false;
-    while(!result_check){
-        queue<vector<int>> store = addToQueue(petrolpumps,i);
-        long long int remainOfPertrol = 0;
-        while(!store.empty() || remainOfPertrol >= 0){
-            // vector<int> it = store.front();
-            // remainOfPertrol += it[0];
-            // remainOfPertrol -= it[1];
-            remainOfPertrol += store.front()[0];
-            remainOfPertrol -= store.front()[1];
-            store.pop();
+BigNumber multiply(BigNumber x, BigNumber y) {
+    BigNumber t;
+    t.init(0);
+    FOR(j, 1, y.a[0])
+        FOR(i, 1, x.a[0]) {
+            ll pro = 1LL * y.a[j] * x.a[i] + t.a[j + i - 1];
+            t.a[j + i] += pro / MOD;
+            t.a[j + i - 1] = pro % MOD;
         }
-        (store.empty())? i++ : result_check = true;
-    }
-    return i;
+    t.a[0] = x.a[0] + y.a[0] + 5;
+    while (t.a[t.a[0]] == 0 && t.a[0] > 1)
+        t.a[0]--;
+    return t;
 }
-int main(){
-    int N;
-    cin >> N;
-    vector<vector<int>> petrolpumps;
-    for(int i = 0; i < N; i++){
-        int amountOFPetrol;
-        int distance;
-        cin >> amountOFPetrol >> distance;
-        petrolpumps.push_back({amountOFPetrol,distance});
+
+
+int lilysHomework(vector<int> arr) {
+    vector<pair<int,int>> parr1;
+    vector<pair<int,int>> parr2;
+    for (long i = 0; i < arr.size(); i++)
+        parr1.push_back({arr[i],i});    
+    for (long i = 0; i < arr.size(); i++)
+        parr2.push_back({arr[i],i});
+    sort(parr1.begin(),parr1.end());
+    sort(parr2.rbegin(),parr2.rend());
+    int counta = 0; int countd = 0;  
+    for (long i = 0; i < parr1.size(); i++) {
+        while(i!=parr1[i].second){
+            swap(parr1[i],parr1[parr1[i].second]);
+            counta++;
+        }
     }
-    cout << truckTour(petrolpumps);
+    for (long i = 0; i < parr2.size(); i++) {
+        while(i != parr2[i].second){
+            swap(parr2[i],parr2[parr2[i].second]);
+            countd++;
+        }    
+    }
+    int result = 0;
+    if (counta < countd) {
+        result = counta;
+    }
+    else {
+        result = countd;
+    }
+    return result;
+}
+
+int main() {
+    int a, b, n;
+    cin >> a >> b >> n;
+    BigNumber s0, s1;
+    s0.init(a);
+    s1.init(b);
+
+    while (--n >= 2) {
+        BigNumber tmp = s1;
+        s1 = add(multiply(s1, s1), s0);
+        s0 = tmp;
+    }
+
+    s1.write();
+    return 0;
 }

@@ -46,7 +46,50 @@ bigNumber add(bigNumber a, bigNumber b)
         
     return res;
 }
+struct BigNumber {
+    int a[50000];
 
+    void init(int x) {
+        memset(a, 0, sizeof(a));
+        a[0] = 1;
+        a[1] = x;
+    }
+
+    void write() {
+        printf("%d", a[a[0]]);
+        FORD(i, a[0] - 1, 1) {
+            for (int j = int(1e8); j > 1 && j > a[i]; j /= 10)
+                printf("0");
+            printf("%d", a[i]);
+        }
+    }
+};
+
+BigNumber add(BigNumber x, BigNumber y) {
+    x.a[0] = max(y.a[0], x.a[0]);
+    FOR(i, 1, x.a[0]) {
+        int sum = x.a[i] + y.a[i];
+        x.a[i] = sum % MOD;
+        x.a[i + 1] += sum / MOD;
+    }
+    x.a[0] += (x.a[x.a[0] + 1] > 0);
+    return x;
+}
+
+BigNumber multiply(BigNumber x, BigNumber y) {
+    BigNumber t;
+    t.init(0);
+    FOR(j, 1, y.a[0])
+        FOR(i, 1, x.a[0]) {
+            ll pro = 1LL * y.a[j] * x.a[i] + t.a[j + i - 1];
+            t.a[j + i] += pro / MOD;
+            t.a[j + i - 1] = pro % MOD;
+        }
+    t.a[0] = x.a[0] + y.a[0] + 5;
+    while (t.a[t.a[0]] == 0 && t.a[0] > 1)
+        t.a[0]--;
+    return t;
+}
 int main(){
     string a, b;
     input(a);

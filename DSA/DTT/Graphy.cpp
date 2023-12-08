@@ -95,7 +95,6 @@ void BFS(int u){
             }
         }
     }
-
 }
 int main(){
     inp_dfs();
