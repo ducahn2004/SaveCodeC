@@ -82,23 +82,23 @@ public:
         }   
         postOrder(root->left);
         postOrder(root->right);
-        cout <<root->val;
+        cout <<root->val << " ";
     }
 
     //LevelOrderTreeTravel
-    void printLevelOrder(node* root){
+    void printLevelOrder(TreeNode* root){
         int h = height(root);
         int i;
         for (i = 1; i <= h; i++)
             printCurrentLevel(root, i);
     }
  
-    // Print nodes at a current level
-    void printCurrentLevel(node* root, int level){
+    // Print TreeNodes at a current level
+    void printCurrentLevel(TreeNode* root, int level){
         if (root == NULL)
             return;
         if (level == 1)
-            cout << root->data << " ";
+            cout << root->val << " ";
         else if (level > 1) {
             printCurrentLevel(root->left, level - 1);
             printCurrentLevel(root->right, level - 1);
@@ -106,16 +106,16 @@ public:
     }
  
     // Compute the "height" of a tree -- the number of
-    // nodes along the longest path from the root node
-    // down to the farthest leaf node.
-    int height(node* node){
-        if (node == NULL)
+    // TreeNodes along the longest path from the root TreeNode
+    // down to the farthest leaf TreeNode.
+    int height(TreeNode* Node){
+        if (Node == NULL)
             return 0;
         else {
             
             // Compute the height of each subtree
-            int lheight = height(node->left);
-            int rheight = height(node->right);
+            int lheight = height(Node->left);
+            int rheight = height(Node->right);
     
             // Use the larger one
             if (lheight > rheight) {
@@ -130,19 +130,19 @@ public:
     /* Function to find LCA of n1 and n2.
     The function assumes that both
     n1 and n2 are present in BST */
-    node* lca(node* root, int n1, int n2)
+    TreeNode* lca(TreeNode* root, int n1, int n2)
     {
         if (root == NULL)
             return NULL;
     
         // If both n1 and n2 are smaller
         // than root, then LCA lies in left
-        if (root->data > n1 && root->data > n2)
+        if (root->val > n1 && root->val > n2)
             return lca(root->left, n1, n2);
     
         // If both n1 and n2 are greater than
         // root, then LCA lies in right
-        if (root->data < n1 && root->data < n2)
+        if (root->val < n1 && root->val < n2)
             return lca(root->right, n1, n2);
     
         return root;
@@ -151,12 +151,12 @@ public:
 
 int main(){
     TreeNode *root = NULL;
-    vector<int> inp{50,25,75,12,37,43,30};
+    vector<int> inp{50,25,75,12,37,43,30,91,72,51,49,27,70,53,66};
     BinaryTree BT;
     
     for(auto it : inp){
         BT.addNode(root,it);
     }
     
-    BT.printLevelOrder(root);
+    BT.preOrderTraversal(root);
 }

@@ -1,102 +1,86 @@
 #include <bits/stdc++.h>
-using namespace std;
 
-//Input 
-/*
-9 9 
-1 2
-1 3
-1 5
-2 4
-3 6
-3 7
-3 9
-5 8
-8 9
-*/
-int n,m; // so luong dinh, so luong canh
-vector<int> adj[1000];
-bool visited[1001];
+class Edge {
+    int v;
+    int w;
+    double weight;
+public:
+    Edge(int v, int w, double weight) : v(v), w(w), weight(weight) {}
+    int either() const { return v; }
+    int other(int vertex) const { return vertex == v ? w : v; }
+    double getWeight() const { return weight; }
+    bool operator<(const Edge& that) const { return weight < that.weight; }
+    bool operator>(const Edge& that) const { return weight > that.weight; }
+    bool operator==(const Edge& that) const { return weight == that.weight; }
+    bool operator!=(const Edge& that) const { return weight != that.weight; }
+    bool operator<=(const Edge& that) const { return weight <= that.weight; }
+    bool operator>=(const Edge& that) const { return weight >= that.weight; }
+};
 
-void inp_dfs(){
-    cin >> n >> m;
-    for(int i = 0; i < m; i++){
-        int x,y; 
-        cin >> x >> y;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+class EdgeWeightedGraph {
+    int V;
+    int E;
+    std::vector<std::vector<Edge>> adj;
+public:
+    EdgeWeightedGraph(int V) : V(V), E(0), adj(V) {}
+    
+    int getV() const { return V; }
+    int getE() const { return E; }
+    
+    void addEdge(const Edge& e) { // add an edge to the graph
+        int v = e.either();
+        int w = e.other(v);
+        adj[v].push_back(e); // add the edge to the adjacency lists of v
+        adj[w].push_back(e); // and w
+        ++E;
     }
-    memset(visited, false , sizeof(visited));
-}
-void inp_dfs_dir(){
-    cin >> n >> m;
-    for(int i = 0; i < m; i++){
-        int x,y; 
-        cin >> x >> y;
-        adj[x].push_back(y);
-        //adj[y].push_back(x);
-    }
-    memset(visited, false , sizeof(visited));
-}
-
-// thuat toan tim kiem theo chieu sau
-void DFS(int u){
-    cout << u << " ";
-    // Danh dau u da duoc tham
-    visited[u] = true;
-    for(int v : adj[u]){
-        //neu dinh V chua duoc tham
-        if(!visited[v]) DFS(v);    
-    }
-}
-
-
-// BFS tim kiem theo chieu rong 
-/*
-10 11
-1 2
-1 3
-1 5
-1 10
-2 4
-3 6
-3 7 
-3 9
-6 7
-5 8
-8 9
-*/
-int n,m;
-vector<int>adj[1000];
-bool visited_bfs[1001];
-void inp(){
-    cin >> n >> m;
-    for(int i = 0 ; i < m; i++){
-        int x,y;
-        cin >> x >> y;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
-    }
-    memset(visited_bfs,false,sizeof(visited_bfs));
-}
-
-void BFS(int u){
-    queue<int>q;
-    q.push(u);
-    visited_bfs[u] = true;
-    while(!q.empty()){
-        int v = q.front();
-        q.pop();
-        cout << v << " ";
-        for(int x : adj[v]){
-            if(!visited_bfs[x]){
-                q.push(x);
-                visited_bfs[x] = true;
+    
+    const std::vector<Edge>& getAdj(int v) const { return adj[v]; }
+    
+    std::vector<Edge> edges() const {
+        std::vector<Edge> edges;
+        for (int v = 0; v < V; ++v) {
+            for (const Edge& e : adj[v]) {
+                if (e.other(v) > v) {
+                    edges.push_back(e);
+                }
             }
         }
+        return edges;
     }
-}
-int main(){
-    inp_dfs();
-    DFS(1);
-}
+};
+class MinimumSpanningTree {
+    const EdgeWeightedGraph& G;
+    std::queue<Edge> mst;
+public:
+    MinimumSpanningTree(const EdgeWeightedGraph& G_)
+        : G(G_)
+    {
+        std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
+        for (int v = 0; v < G.getV(); ++v) {
+            for (const Edge& e : G.getAdj(v)) {
+                if (e.other(v) > v) {
+                    pq.push(e);
+                }
+            }
+        }
+
+        WeightedQuickUnionWithPathCompression uf(G.getV());
+        while (!pq.empty() && mst.size() < G.getV() - 1) {
+            Edge e = pq.top();
+            pq.pop();
+            int v = e.either();
+            int w = e.other(v);
+            if (!uf.connected(v, w)) {
+                uf.link(v, w);
+                mst.push(e);
+            }
+        }
+
+    }
+
+    std::queue<Edge> edges() const 
+    {
+        return mst;
+    }
+};

@@ -16,7 +16,7 @@ public:
         }
     }
 
-    /*O(N^2) and 0(1)    */
+    /*O(N^2) and 0(n)    */
     void selectionSort(vector<int> &array){
         for (int i = 0; i < array.size(); i++){
             int min = i; // the smallest value from i to end.
