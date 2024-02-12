@@ -1,23 +1,39 @@
 #include<bits/stdc++.h>
+
 using namespace std;
 
-
-int main(){
-    vector<int>a{4,2,4,6,1};
-    int maxSum = 10;
-    stack<int>stA;
-    long long int sum = 0;
-    int result = 0;
-    for(int i = 0; i < a.size(); i++){
-        if(sum + a[i] <= maxSum){
-            stA.push(a[i]);
-            result++;
-            sum += a[i];
+class Solution {
+public:
+    bool areDistinct(string str, int i, int j)
+    {
+    
+        // Note : Default values in visited are false
+        vector<bool> visited(256);
+    
+        for (int k = i; k <= j; k++) {
+            if (visited[str[k]] == true)
+                return false;
+            visited[str[k]] = true;
         }
+        return true;
     }
-    stack<int>stB = stA;
-    while(!stB.empty()){
-        cout << stB.top() << " ";
-        stB.pop();
+    
+    // Returns length of the longest substring
+    // with all distinct characters.
+    int lengthOfLongestSubstring(string str)
+    {
+        int n = str.size();
+        int res = 0; // result
+        for (int i = 0; i < n; i++)
+            for (int j = i; j < n; j++)
+                if (areDistinct(str, i, j))
+                    res = max(res, j - i + 1);
+        return res;
     }
+};
+int main(){
+    string s = "au";
+    // cin >> s;
+    Solution so;
+    cout << so.lengthOfLongestSubstring(s);
 }
