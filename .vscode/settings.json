@@ -92,5 +92,6 @@
         "queue": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
-    "cmake.sourceDirectory": "C:/Users/Administrator/Code/SaveCodeC/SDLgame/SDL2-2.26.3/test"
+    "cmake.sourceDirectory": "C:/Users/Administrator/Code/SaveCodeC/SDLgame/SDL2-2.26.3/test",
+    "cmake.ignoreCMakeListsMissing": true
 }
